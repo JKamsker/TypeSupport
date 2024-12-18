@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TypeSupport.Extensions
 {
@@ -65,7 +66,11 @@ namespace TypeSupport.Extensions
             if (options.HasFlag(PropertyOptions.HasIndexer))
                 returnProperties = returnProperties.Where(x => x.GetIndexParameters().Any());
 
+            if (options.HasFlag(PropertyOptions.NoCompilerGenerated))
+                returnProperties = returnProperties.Where(x => !x.GetGetMethod(true).IsDefined(typeof(CompilerGeneratedAttribute), true));
+
             return returnProperties
+                .Where(x => !(x.Name == "EqualityContract" && x.PropertyType == typeof(Type)))
                 .Select(x => new ExtendedProperty(x, propogateTypeSupportOptions)).ToList();
         }
 

@@ -32,5 +32,9 @@ namespace TypeSupport.Extensions
         /// Properties that contain a collection indexer
         /// </summary>
         HasIndexer = 16,
+        /// <summary>
+        /// Do not include compiler generated types
+        /// </summary>
+        NoCompilerGenerated = 32,
     }
 }
